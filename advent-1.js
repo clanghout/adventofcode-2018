@@ -17,7 +17,7 @@ function advent1(inp) {
             return -9999;
         }
         if (isNaN(inter)) {
-            console.log(`error with acc ${acc}, curr ${curr}, currV ${currV}`)
+            console.log(`error with acc ${acc}, curr ${curr}, currV ${currV}`);
             return 0;
         }
         return inter;
