@@ -14,7 +14,7 @@ function advent3(inp) {
             return acc;
         }
         let claimRes = parseElfClaim(claim);
-        let cutResult = cutFabric(fabric, claimRes.startX, claimRes.startY, claimRes.width, claimRes.height);
+        let cutResult = cutFabric(fabric, claimRes.minX, claimRes.minY, claimRes.maxX, claimRes.maxY);
         fabric = cutResult.fabric;
         return acc + cutResult.res;
     }, 0);
@@ -24,8 +24,8 @@ function advent3(inp) {
 function cutFabric(fabric, startX, startY, width, height) {
     let res = 0;
     let potential = true;
-    for (let x = startX; x < startX + width; x++) {
-        for (let y = startY; y < startY + height; y++) {
+    for (let x = minX; x < minX + maxX; x++) {
+        for (let y = minY; y < minY + maxY; y++) {
             if (fabric[x][y]) {
                 potential = false;
                 fabric[x][y]++;
@@ -46,7 +46,7 @@ function cutFabric(fabric, startX, startY, width, height) {
 }
 
 function parseElfClaim(claim) {
-    // claim is formatted like "#1 @ 1,3: 4x4" as "#id @startX,startY: widthxheight"
+    // claim is formatted like "#1 @ 1,3: 4x4" as "#id @minX,minY: widthxheight"
     if (claim.includes('#') && claim.includes('@')) {
         let working = claim.split('#')[1];
         working = working.split('@');
@@ -61,10 +61,10 @@ function parseElfClaim(claim) {
 
         return {
             id: id,
-            startX: startX,
-            startY: startY,
-            width: width,
-            height: height
+            minX: minX,
+            minY: minY,
+            maxX: maxX,
+            maxY: maxY
         }
     } else {
         console.log(`Claim ${claim} is formatted incorrectly`);
@@ -85,7 +85,7 @@ function advent3_2(inp) {
     inp.forEach((claim) => {
         if (claim.includes('#')) {
             let claimRes = parseElfClaim(claim);
-            let cutResult = cutFabric(fabric, claimRes.startX, claimRes.startY, claimRes.width, claimRes.height);
+            let cutResult = cutFabric(fabric, claimRes.minX, claimRes.minY, claimRes.maxX, claimRes.maxY);
             fabric = cutResult.fabric;
             if(cutResult.potential){
                 potentialCuts.push(claimRes);
@@ -95,7 +95,7 @@ function advent3_2(inp) {
 
     for(let i = 0; i<potentialCuts.length;i++){
         let cut = potentialCuts[i];
-        if(checkPotentialCut(fabric, cut.startX, cut.startY, cut.width, cut.height)){
+        if(checkPotentialCut(fabric, cut.minX, cut.minY, cut.maxX, cut.maxY)){
             return cut.id;
         }
     }
@@ -105,8 +105,8 @@ function advent3_2(inp) {
 }
 
 function checkPotentialCut(fabric, startX, startY, width, height){
-    for (let x = startX; x < startX + width; x++) {
-        for (let y = startY; y < startY + height; y++) {
+    for (let x = minX; x < minX + maxX; x++) {
+        for (let y = minY; y < minY + maxY; y++) {
             if(fabric[x][y] > 1){
                 return false;
             }
