@@ -5,12 +5,7 @@ function isUpper(st) {
     return st === st.toUpperCase();
 }
 
-function canDestroy(ch1, ch2) {
-    let ch1Up = isUpper(ch1);
-    let ch2Up = isUpper(ch2);
-    return ((ch1Up && !ch2Up) || (!ch1Up && ch2Up)) && ch1.toUpperCase() === ch2.toUpperCase();
-}
-
+const canDestroy = (ch1,ch2) => ch1 !== ch2 && ch1.toUpperCase() === ch2.toUpperCase();
 
 // returns string after one destruction
 function searchAndDestroy(chain, index) {
