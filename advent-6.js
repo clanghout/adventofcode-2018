@@ -13,23 +13,11 @@ const parseCoord = (coordString) => {
 
 const getDistance = (c1, c2) => Math.abs(c1.x - c2.x) + Math.abs(c1.y - c2.y);
 
-const findBounds = (coordList) => coordList.slice().reduce((acc, curr) => {
-    acc = acc ? acc : {};
-    acc.width = acc.width ? (curr.x > acc.width) ? curr.x : acc.width : curr.x;
-    acc.startX = acc.startX ? (curr.x < acc.startX) ? curr.x : acc.startX : curr.x;
-    acc.height = acc.height ? (curr.y > acc.height) ? curr.y : acc.height : curr.y;
-    acc.startY = acc.startY ? (curr.y < acc.startY) ? curr.y : acc.startY : curr.y;
-    return acc;
-}, {
-    width: 0,
-    startX: 2000,
-    height: 0,
-    startY: 2000
-});
+
 
 function advent6(inp) {
     const coordList = inp.map(parseCoord);
-    let parsedVals = findBounds(coordList);
+    let parsedVals = utils.findBounds(coordList);
 
     let closestLog = coordList.slice().map((coord) => {
         coord.closeCount = 0;
@@ -37,8 +25,8 @@ function advent6(inp) {
         return coord;
     });
 
-    for (let h = parsedVals.startY - 1; h <= parsedVals.height + 1; h++) {
-        for (let w = parsedVals.startX - 1; w <= parsedVals.width + 1; w++) {
+    for (let h = parsedVals.minY - 1; h <= parsedVals.maxY + 1; h++) {
+        for (let w = parsedVals.minX - 1; w <= parsedVals.maxX + 1; w++) {
             let minDist = 1000;
             let double = false;
             let closest = {};
@@ -55,7 +43,7 @@ function advent6(inp) {
             });
             if (!double)
                 closest.closeCount++;
-            if (h <= parsedVals.startY || h >= parsedVals.height || w <= parsedVals.startX || w >= parsedVals.width) {
+            if (h <= parsedVals.minY || h >= parsedVals.maxY || w <= parsedVals.minX || w >= parsedVals.maxX) {
                 closest.hasEdge = true;
             }
         }
@@ -66,12 +54,12 @@ function advent6(inp) {
 
 function advent6_2(inp) {
     const coordList = inp.map(parseCoord);
-    let parsedVals = findBounds(coordList);
+    let parsedVals = utils.findBounds(coordList);
 
     let safeAreaSize = 0;
 
-    for (let h = parsedVals.startY - 1; h <= parsedVals.height + 1; h++) {
-        for (let w = parsedVals.startX - 1; w <= parsedVals.width + 1; w++) {
+    for (let h = parsedVals.minY - 1; h <= parsedVals.maxY + 1; h++) {
+        for (let w = parsedVals.minX - 1; w <= parsedVals.maxX + 1; w++) {
             let minDist = inp.length > 10 ? 10000 : 32;
             let totalDist = coordList.reduce((acc, curr) => acc + getDistance(curr, {x: w, y: h}), 0);
             if (totalDist < minDist) {

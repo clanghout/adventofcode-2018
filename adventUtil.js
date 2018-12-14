@@ -27,6 +27,21 @@ function testAdvent(input, expected, funct) {
     return false;
 }
 
+const findBounds = (coordList) => coordList.slice().reduce((acc, curr) => {
+    acc = acc ? acc : {};
+    acc.maxX = (curr.x > acc.maxX) ? curr.x : acc.maxX;
+    acc.minX = (curr.x < acc.minX) ? curr.x : acc.minX;
+    acc.maxY = (curr.y > acc.maxY) ? curr.y : acc.maxY;
+    acc.minY = (curr.y < acc.minY) ? curr.y : acc.minY;
+    return acc;
+}, {
+    maxX: -Infinity,
+    minX: Infinity,
+    maxY: -Infinity,
+    minY: Infinity
+});
+
 module.exports = {
-    'testAdvent' : testAdvent
-}
+    'testAdvent' : testAdvent,
+    findBounds: findBounds
+};
