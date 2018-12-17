@@ -23,7 +23,7 @@ function testAdvent(input, expected, funct) {
         console.check(`Input gives expected result ${expected}`);
         return true;
     }
-    console.poo(`Error: Input ${input} returned ${result} but ${expected} was expected`);
+    console.poo(`Error: Input test returned ${result} but ${expected} was expected`);
     return false;
 }
 
