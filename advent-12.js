@@ -32,11 +32,9 @@ function advent12(inp) {
     let oldGen = inp.state;
     let newGen;
 
-    for (let generation = 1; generation <= 50000000000; generation++) {
+    let res = 0;
+    for (let generation = 1; generation <= 169; generation++) {
         newGen = [];
-        if(generation % 1000000 === 0){
-            console.log('done ',generation);
-        }
         for (let x = minX - 1; x < maxX + 1; x++) {
             let situation = '';
             for (let rx = x - 2; rx <= x + 2; rx++) {
@@ -63,16 +61,14 @@ function advent12(inp) {
             // update minX and maxX
         }
         oldGen = newGen;
+        let newRes = 0;
+        for(let x = minX; x < maxX;x++){
+            newRes += newGen[x] === '#' ? x : 0;
+        }
+        console.log(generation + " => " + newRes, newRes - res);
+        res = newRes;
     }
-
-    // printGens(generations, minX, maxX);
-    console.log(minX, maxX);
-    let lastGen = newGen;
-    let res = 0;
-    for(let x = minX; x < maxX;x++){
-        res += lastGen[x] === '#' ? x : 0;
-    }
-    return res;
+    return res + (50000000000-169)*75;
 }
 //
 // const printGens = (generations, minX, maxX) => {
